@@ -99,6 +99,8 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 	rm -rf /var/lib/apt/lists/* && \
 	update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
+RUN ln -s 
+
 # Update PIP, add SNI support to Python, install additional packages
 RUN pip --no-cache-dir install --upgrade pip && \
 	pip --no-cache-dir install \
@@ -180,6 +182,9 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
 COPY run_jupyter.sh /root/
+
+# Finish configuration
+RUN export LD_LIBRARY_PATH=/usr/local/cuda/compat:$LD_LIBRARY_PATH
 
 # Expose Ports for TensorBoard (6006), Ipython (8888)
 EXPOSE 6006 8888
