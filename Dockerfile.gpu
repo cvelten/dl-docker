@@ -99,8 +99,6 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 	rm -rf /var/lib/apt/lists/* && \
 	update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
-RUN ln -s 
-
 # Update PIP, add SNI support to Python, install additional packages
 RUN pip --no-cache-dir install --upgrade pip && \
 	pip --no-cache-dir install \
