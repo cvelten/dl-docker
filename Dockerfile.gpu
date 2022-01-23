@@ -129,6 +129,13 @@ RUN pip --no-cache-dir install --upgrade pip && \
 		&& \
 	python -m ipykernel.kernelspec
 
+# Install R Pakcages
+RUN \
+	echo "XRPython\n\
+		randomForestSRC" > rpacks.txt && \
+	R -e 'install.packages(sub("(.+)\\\\n","\\1", scan("rpacks.txt", "character")), repos="http://cran.wustl.edu")' && \
+	rm rpacks.txt
+
 # Install TensorFlow
 RUN pip --no-cache-dir install --upgrade tensorflow tensorboard-logger
 
@@ -146,6 +153,7 @@ RUN apt update && apt install -y \
 RUN pip --no-cache-dir install git+https://github.com/Theano/Theano.git#egg=Theano && \
 	\
 	echo "[global]\ndevice=cuda\nfloatX=float32\noptimizer_including=cudnn\nmode=FAST_RUN \
+		\n[dnn]\ninclude_path=/usr/local/cuda/include\nlibrary_path=/usr/local/cuda/lib64 \
 		\n[lib]\ncnmem=0.95 \
 		\n[nvcc]\nfastmath=True \
 		\n[blas]\nldflag = -L/usr/lib/openblas-base -lopenblas \
@@ -167,13 +175,6 @@ RUN pip --no-cache-dir install git+https://github.com/Theano/Theano.git#egg=Thea
 	# Install Torch
 	pip --no-cache-dir install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 
-
-# Install R Pakcages
-RUN \
-	echo "XRPython\n\
-		randomForestSRC" > rpacks.txt && \
-	R -e 'install.packages(sub("(.+)\\\\n","\\1", scan("rpacks.txt", "character")), repos="http://cran.wustl.edu")' && \
-	rm rpacks.txt
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
