@@ -182,7 +182,7 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 COPY run_jupyter.sh /root/
 
 # Finish configuration
-RUN export LD_LIBRARY_PATH=/usr/local/cuda/compat:$LD_LIBRARY_PATH
+RUN cd /usr/lib && for lib in /usr/local/cuda/compat/*.so; do ln -s $lib 
 
 # Expose Ports for TensorBoard (6006), Ipython (8888)
 EXPOSE 6006 8888
