@@ -165,7 +165,8 @@ RUN apt update && apt install -y \
 	rm -rf /var/lib/apt/lists/*
 
 # Install Theano and set up Theano config (.theanorc) for CUDA and OpenBLAS
-RUN pip --no-cache-dir install git+https://github.com/Theano/Theano.git#egg=Theano && \
+RUN pip --no-cache-dir install aesara \
+	pip --no-cache-dir install git+https://github.com/Theano/Theano.git#egg=Theano && \
 	\
 	echo "[global]\ndevice=cuda\nfloatX=float32\noptimizer_including=cudnn\nmode=FAST_RUN \
 		\n[dnn]\ninclude_path=/usr/local/cuda/include\nlibrary_path=/usr/local/cuda/lib64 \
